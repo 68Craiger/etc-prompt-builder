@@ -1,0 +1,1716 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+  <meta name="description" content="ETC - Engineering the Conversation. A professional prompt builder for creating structured, high-quality AI prompts with Level 1 and Level 2 frameworks.">
+  <meta name="author" content="Trevor">
+  <meta property="og:title" content="ETC - Engineering the Conversation">
+  <meta property="og:description" content="Professional prompt builder for AI conversations">
+  <meta property="og:type" content="website">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='0.9em' font-size='90'>✦</text></svg>">
+  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETC — Engineering the Conversation</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* Base layout variables */
+  :root {
+    --radius: 6px;
+    --radius-lg: 12px;
+  }
+
+  /* LIGHT THEME - DEFAULT */
+  :root,
+  html,
+  html[data-theme="light"] {
+    --bg: #ffffff;
+    --surface: #f8f8f8;
+    --surface2: #f0f0f0;
+    --border: #d4d4d4;
+    --border-active: #c9922a;
+    --gold: #b8811f;
+    --gold-light: #d4a146;
+    --gold-dim: rgba(184,129,31,0.1);
+    --text: #1a1a1a;
+    --text-dim: #666666;
+    --text-muted: #999999;
+    --good: #2d7a47;
+    --warn: #b8811f;
+    --bad: #c24545;
+    --level2: #2d7a7a;
+    --level2-dim: rgba(45,122,122,0.1);
+  }
+
+  /* DARK THEME - OPTIONAL */
+  html[data-theme="dark"] {
+    --bg: #0e0e0f;
+    --surface: #161618;
+    --surface2: #1d1d20;
+    --border: #2a2a2e;
+    --border-active: #c9922a;
+    --gold: #c9922a;
+    --gold-light: #e8b060;
+    --gold-dim: rgba(201,146,42,0.15);
+    --text: #f0ede8;
+    --text-dim: #8a8680;
+    --text-muted: #4a4845;
+    --good: #5a9e6f;
+    --warn: #c9922a;
+    --bad: #b85c5c;
+    --level2: #5a9e9e;
+    --level2-dim: rgba(90,158,158,0.15);
+  }
+
+  /* Rest of CSS stays the same */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  .app-shell {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    min-height: 100vh;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    background: rgba(14,14,15,0.95);
+    backdrop-filter: blur(12px);
+    z-index: 100;
+  }
+
+  .logo {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .logo-mark {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.5rem;
+    color: var(--gold);
+    letter-spacing: -0.02em;
+  }
+
+  .logo-sep {
+    width: 1px;
+    height: 18px;
+    background: var(--border);
+  }
+
+  .logo-name {
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: var(--text-dim);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .btn-ghost {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 6px 14px;
+    border-radius: var(--radius);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    letter-spacing: 0.03em;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+  .main {
+    display: grid;
+    grid-template-columns: 280px 1fr 380px;
+    height: calc(100vh - 64px);
+    overflow: hidden;
+  }
+
+  .sidebar {
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 1.5rem;
+  }
+
+  .sidebar-section {
+    margin-bottom: 2rem;
+  }
+
+  .sidebar-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  .framework-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .framework-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: transparent;
+    transition: background 0.15s;
+  }
+
+  .framework-card:hover { 
+    border-color: var(--border-active); 
+    background: var(--surface2); 
+  }
+  .framework-card:hover::before { background: var(--gold); }
+
+  .framework-card.active {
+    border-color: var(--gold);
+    background: var(--gold-dim);
+  }
+  .framework-card.active::before { background: var(--gold); }
+
+  .fw-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+
+  .fw-desc {
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    line-height: 1.4;
+  }
+
+  .fw-tag {
+    display: inline-block;
+    font-size: 0.62rem;
+    font-family: 'DM Mono', monospace;
+    background: rgba(201,146,42,0.15);
+    color: var(--gold);
+    border: 1px solid rgba(201,146,42,0.3);
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-top: 6px;
+    letter-spacing: 0.04em;
+    font-weight: 500;
+  }
+  .framework-card.active .fw-tag { 
+    background: rgba(201,146,42,0.25); 
+    color: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .builder {
+    overflow-y: auto;
+    padding: 2rem;
+  }
+
+  .builder-header {
+    margin-bottom: 2rem;
+  }
+
+  .builder-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.6rem;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+
+  .builder-subtitle {
+    font-size: 0.83rem;
+    color: var(--text-dim);
+  }
+
+  .field-group {
+    margin-bottom: 1.25rem;
+  }
+
+  .field-group.hidden {
+    display: none;
+  }
+
+  .field-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+
+  .field-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .field-required {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: inline-block;
+  }
+
+  .field-optional {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  input[type="text"],
+  textarea,
+  select {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.88rem;
+    padding: 10px 14px;
+    transition: all 0.15s;
+    resize: vertical;
+    outline: none;
+  }
+
+  input[type="text"]:focus,
+  textarea:focus,
+  select:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(201,146,42,0.1);
+  }
+
+  textarea { 
+    min-height: 80px; 
+    line-height: 1.6; 
+  }
+
+  .field-hint {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 5px;
+    font-style: italic;
+  }
+
+  .step-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .step-item {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.68rem;
+    font-family: 'DM Mono', monospace;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    margin-top: 9px;
+  }
+
+  .step-item textarea {
+    min-height: 50px;
+    font-size: 0.82rem;
+  }
+
+  .add-step-btn {
+    background: none;
+    border: 1px dashed var(--border);
+    color: var(--text-muted);
+    width: 100%;
+    padding: 8px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-family: 'Outfit', sans-serif;
+    transition: all 0.15s;
+    margin-top: 4px;
+  }
+
+  .add-step-btn:hover { 
+    border-color: var(--gold); 
+    color: var(--gold); 
+  }
+
+  .preview-panel {
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .preview-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+
+  .preview-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--good);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .btn-copy {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--gold);
+    border: none;
+    color: #0e0e0f;
+    padding: 6px 14px;
+    border-radius: var(--radius);
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-copy:hover { background: var(--gold-light); }
+  .btn-copy.copied { background: var(--good); color: #fff; }
+
+  .preview-content {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .prompt-output {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    line-height: 1.8;
+    color: var(--text);
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .prompt-key {
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  .prompt-val {
+    color: var(--text);
+  }
+
+  .prompt-empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--text-muted);
+  }
+
+  .prompt-empty-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+    opacity: 0.3;
+  }
+
+  .prompt-empty-text {
+    font-size: 0.82rem;
+    font-family: 'DM Mono', monospace;
+    line-height: 1.6;
+  }
+
+  /* Status panel now inline in preview */
+
+  .status-items {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  .status-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--good);
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+
+  .tab {
+    padding: 8px 16px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+  }
+  .tab:hover { color: var(--text-dim); }
+  .tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .status-item.good { color: var(--good); }
+  .status-item.good .status-dot { background: var(--good); }
+  .status-item.warn { color: var(--warn); }
+  .status-item.warn .status-dot { background: var(--warn); }
+  .status-item.bad { color: #c07070; }
+  .status-item.bad .status-dot { background: var(--bad); }
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 500;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    width: 560px;
+    max-width: 90vw;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  .modal-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-close {
+    float: right;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 1.2rem;
+  }
+
+  .lib-item {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+  }
+  .lib-item:hover { border-color: var(--gold); }
+
+  .lib-item-name {
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+
+  .lib-item-meta {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    display: flex;
+    gap: 8px;
+  }
+
+  .lib-item-tag {
+    font-size: 0.62rem;
+    background: var(--surface);
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .lib-delete {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--bad);
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 20px;
+    font-size: 0.82rem;
+    z-index: 600;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.25s;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+</style>
+</head>
+<body>
+
+<div class="app-shell">
+  <header>
+    <div class="logo">
+      <div class="logo-mark">ETC</div>
+      <div class="logo-sep"></div>
+      <div class="logo-name" style="color: var(--gold);">Engineering the Conversation</div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-ghost" onclick="toggleTheme()" id="theme-toggle" title="Toggle light/dark mode">☀️</button>
+      <button class="btn-ghost" onclick="openLibrary()">📚 Library</button>
+      <button class="btn-ghost" onclick="resetAll()">↺ Reset</button>
+    </div>
+  </header>
+
+  <div class="main">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Level 1 — Structure the Prompt</div>
+
+        <div class="framework-card active" onclick="selectFramework('basic')" id="fw-basic">
+          <div class="fw-name">Structured Prompt</div>
+          <div class="fw-desc">Persona + Task + Context. The universal foundation.</div>
+          <div class="fw-tag">FOUNDATIONAL</div>
+        </div>
+
+        <div class="framework-card" onclick="selectFramework('fewshot')" id="fw-fewshot">
+          <div class="fw-name">Few-Shot Prompt</div>
+          <div class="fw-desc">Teach by example. Model patterns, not just instructions.</div>
+          <div class="fw-tag">EXAMPLES</div>
+        </div>
+
+        <div class="framework-card" onclick="selectFramework('cot')" id="fw-cot">
+          <div class="fw-name">Chain-of-Thought</div>
+          <div class="fw-desc">Force step-by-step reasoning for complex problems.</div>
+          <div class="fw-tag">REASONING</div>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label" style="color: var(--level2);">Level 2 — Structure the Thinking</div>
+
+        <div class="framework-card" onclick="selectFramework('decompose')" id="fw-decompose">
+          <div class="fw-name">Task Decomposition</div>
+          <div class="fw-desc">Break complex work into sequential stages.</div>
+          <div class="fw-tag" style="background: var(--level2-dim); color: var(--level2);">LEVEL 2</div>
+        </div>
+
+        <div class="framework-card" onclick="selectFramework('decision')" id="fw-decision">
+          <div class="fw-name">Decision Framework</div>
+          <div class="fw-desc">Structured comparative evaluation.</div>
+          <div class="fw-tag" style="background: var(--level2-dim); color: var(--level2);">LEVEL 2</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- BUILDER -->
+    <div class="builder">
+      <div class="builder-header">
+        <div class="builder-title" id="framework-title">Structured Prompt Builder</div>
+        <div class="builder-subtitle" id="framework-desc">Start with the fundamentals — persona, task, and context.</div>
+      </div>
+
+      <!-- TABS -->
+      <div style="display:flex; gap:0; border-bottom:1px solid var(--border); margin-bottom:1.5rem;">
+        <div class="tab active" onclick="switchTab('build')">Build</div>
+        <div class="tab" onclick="switchTab('examples')">Examples</div>
+        <div class="tab" onclick="switchTab('guide')">Guide</div>
+      </div>
+
+      <!-- BUILD TAB CONTENT -->
+      <div class="tab-content active" id="tab-build">
+
+      <!-- Persona -->
+      <div class="field-group" id="field-persona">
+        <div class="field-header">
+          <label class="field-label">
+            <span class="field-required"></span>
+            Persona
+          </label>
+        </div>
+        <input type="text" id="persona" placeholder="e.g. You are a senior organizational change strategist..." oninput="update()">
+        <div class="field-hint">Define expertise level, industry, and perspective.</div>
+      </div>
+
+      <!-- Task -->
+      <div class="field-group" id="field-task">
+        <div class="field-header">
+          <label class="field-label">
+            <span class="field-required"></span>
+            Task
+          </label>
+        </div>
+        <textarea id="task" placeholder="e.g. Write a 3-part communication plan for rolling out..." oninput="update()"></textarea>
+        <div class="field-hint">Use verbs: Write, Analyze, Summarize, Compare, Generate, Evaluate.</div>
+      </div>
+
+      <!-- Context -->
+      <div class="field-group" id="field-context">
+        <div class="field-header">
+          <label class="field-label">
+            <span class="field-required"></span>
+            Context
+          </label>
+        </div>
+        <textarea id="context" placeholder="e.g. This is a Fortune 500 company with 8,000 employees..." oninput="update()"></textarea>
+        <div class="field-hint">Who's involved? What's the situation? What constraints exist?</div>
+      </div>
+
+      <!-- Constraints -->
+      <div class="field-group" id="field-constraints">
+        <div class="field-header">
+          <label class="field-label">
+            Constraints
+            <span class="field-optional">(optional)</span>
+          </label>
+        </div>
+        <input type="text" id="constraints" placeholder="e.g. Keep under 400 words. Use plain language. Avoid jargon." oninput="update()">
+      </div>
+
+      <!-- Output Format -->
+      <div class="field-group" id="field-format">
+        <div class="field-header">
+          <label class="field-label">
+            Output Format
+            <span class="field-optional">(optional)</span>
+          </label>
+        </div>
+        <select id="output-format" onchange="update()">
+          <option value="">Select a format...</option>
+          <option value="prose">Prose paragraphs</option>
+          <option value="bullets">Bulleted list</option>
+          <option value="numbered">Numbered list</option>
+          <option value="table">Table</option>
+          <option value="headers">Sections with headers</option>
+          <option value="email">Email format</option>
+          <option value="memo">Memo format</option>
+          <option value="json">Structured JSON</option>
+          <option value="stepbystep">Step-by-step guide</option>
+        </select>
+      </div>
+
+      <!-- Examples (Few-Shot) -->
+      <div class="field-group hidden" id="field-examples">
+        <div class="field-header">
+          <label class="field-label">Examples</label>
+        </div>
+        <div style="margin-bottom: 8px;">
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:4px;">Example Input</div>
+          <textarea id="example-input" placeholder='e.g. Input: "What are the benefits of remote work?"' oninput="update()" style="min-height:60px;"></textarea>
+        </div>
+        <div>
+          <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:4px;">Example Output</div>
+          <textarea id="example-output" placeholder='e.g. Output: "Remote work offers three strategic advantages..."' oninput="update()" style="min-height:60px;"></textarea>
+        </div>
+      </div>
+
+      <!-- COT Steps -->
+      <div class="field-group hidden" id="field-cot-steps">
+        <div class="field-header">
+          <label class="field-label">Reasoning Steps</label>
+        </div>
+        <div class="step-list" id="cot-steps">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <textarea class="cot-step" placeholder="First, identify the key stakeholders..." oninput="update()"></textarea>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <textarea class="cot-step" placeholder="Then, analyze their concerns..." oninput="update()"></textarea>
+          </div>
+        </div>
+        <button class="add-step-btn" onclick="addCotStep()">+ Add Reasoning Step</button>
+      </div>
+
+      <!-- Decompose Steps (Level 2) -->
+      <div class="field-group hidden" id="field-decompose-steps">
+        <div class="field-header">
+          <label class="field-label">
+            <span class="field-required"></span>
+            Decomposition Stages
+          </label>
+        </div>
+        <div class="step-list" id="decompose-steps">
+          <div class="step-item">
+            <div class="step-num">1</div>
+            <textarea class="decompose-step" placeholder="Stage 1: Analyze stakeholder concerns..." oninput="update()"></textarea>
+          </div>
+          <div class="step-item">
+            <div class="step-num">2</div>
+            <textarea class="decompose-step" placeholder="Stage 2: Identify dependencies..." oninput="update()"></textarea>
+          </div>
+        </div>
+        <button class="add-step-btn" onclick="addDecomposeStep()">+ Add Stage</button>
+      </div>
+
+      <!-- Evaluation Criteria (Level 2) -->
+      <div class="field-group hidden" id="field-eval-criteria">
+        <div class="field-header">
+          <label class="field-label">Evaluation Criteria</label>
+        </div>
+        <textarea id="eval-criteria" placeholder="e.g. Feasibility, stakeholder buy-in, risk level, cost..." oninput="update()"></textarea>
+      </div>
+
+      <!-- Decision Options (Level 2) -->
+      <div class="field-group hidden" id="field-decision-options">
+        <div class="field-header">
+          <label class="field-label">
+            <span class="field-required"></span>
+            Decision Options
+          </label>
+        </div>
+        <div class="step-list" id="decision-options">
+          <div class="step-item">
+            <div class="step-num">A</div>
+            <textarea class="decision-option" placeholder="Option A: Build in-house..." oninput="update()"></textarea>
+          </div>
+          <div class="step-item">
+            <div class="step-num">B</div>
+            <textarea class="decision-option" placeholder="Option B: Partner with vendor..." oninput="update()"></textarea>
+          </div>
+        </div>
+        <button class="add-step-btn" onclick="addDecisionOption()">+ Add Option</button>
+      </div>
+
+      <!-- Decision Method (Level 2) -->
+      <div class="field-group hidden" id="field-decision-method">
+        <div class="field-header">
+          <label class="field-label">Decision Method</label>
+        </div>
+        <select id="decision-method" onchange="update()">
+          <option value="">Select method...</option>
+          <option value="scoring">Scoring matrix (1-5 scale)</option>
+          <option value="weighted">Weighted criteria</option>
+          <option value="eliminate">Elimination by must-haves</option>
+        </select>
+      </div>
+
+      <!-- SAVE ROW -->
+      <div style="display:flex; gap:10px; margin-top:1.5rem; padding-top:1.5rem; border-top:1px solid var(--border);">
+        <input type="text" id="save-name" placeholder="Prompt name..." style="flex:1; height:38px; padding:0 12px;">
+        <input type="text" id="save-tag" placeholder="Tag..." style="width:100px; height:38px; padding:0 12px;">
+        <button onclick="savePrompt()" style="height:38px; padding:0 16px; background:var(--gold); color:#0e0e0f; border:none; border-radius:var(--radius); cursor:pointer; font-family:'Outfit',sans-serif; font-weight:600;">Save</button>
+      </div>
+
+      </div><!-- End Build Tab -->
+
+      <!-- EXAMPLES TAB -->
+      <div class="tab-content" id="tab-examples">
+        <div style="margin-bottom:2rem;">
+          <div style="font-size:0.9rem; font-weight:600; color:var(--gold); margin-bottom:0.5rem;">Level 1: Structure the Prompt</div>
+          
+          <!-- Structured Prompt Examples -->
+          <div style="margin-bottom:1.5rem;">
+            <div style="font-size:0.82rem; font-weight:500; margin-bottom:0.5rem;">Structured Prompt</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+              <div style="background:var(--surface); border:1px solid var(--bad); border-radius:var(--radius); padding:10px;">
+                <div style="font-size:0.65rem; font-weight:600; color:var(--bad); margin-bottom:5px;">❌ WEAK</div>
+                <div style="font-size:0.75rem; color:var(--text-dim);">Help me write something about change management.</div>
+              </div>
+              <div style="background:var(--surface); border:1px solid var(--good); border-radius:var(--radius); padding:10px;">
+                <div style="font-size:0.65rem; font-weight:600; color:var(--good); margin-bottom:5px;">✓ STRONG</div>
+                <div style="font-size:0.75rem; color:var(--text-dim);">You are a senior change strategist. Write a 250-word message to frontline managers explaining an ERP migration. Tone: direct and reassuring.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Few-Shot Examples -->
+          <div style="margin-bottom:1.5rem;">
+            <div style="font-size:0.82rem; font-weight:500; margin-bottom:0.5rem;">Few-Shot Prompt</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+              <div style="background:var(--surface); border:1px solid var(--bad); border-radius:var(--radius); padding:10px;">
+                <div style="font-size:0.65rem; font-weight:600; color:var(--bad); margin-bottom:5px;">❌ WEAK</div>
+                <div style="font-size:0.75rem; color:var(--text-dim);">Write product descriptions for me.</div>
+              </div>
+              <div style="background:var(--surface); border:1px solid var(--good); border-radius:var(--radius); padding:10px;">
+                <div style="font-size:0.65rem; font-weight:600; color:var(--good); margin-bottom:5px;">✓ STRONG</div>
+                <div style="font-size:0.75rem; color:var(--text-dim);">Input: "Wireless mouse" → Output: "Ergonomic wireless mouse with 6 programmable buttons. 18-month battery life."<br><br>Now write for: "Standing desk"</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chain-of-Thought Examples -->
+          <div style="margin-bottom:1.5rem;">
+            <div style="font-size:0.82rem; font-weight:500; margin-bottom:0.5rem;">Chain-of-Thought</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+              <div style="background:var(--surface); border:1px solid var(--bad); border-radius:var(--radius); padding:10px;">
+                <div style="font-size:0.65rem; font-weight:600; color:var(--bad); margin-bottom:5px;">❌ WEAK</div>
+                <div style="font-size:0.75rem; color:var(--text-dim);">Analyze this business problem for me.</div>
+              </div>
+              <div style="background:var(--surface); border:1px solid var(--good); border-radius:var(--radius); padding:10px;">
+                <div style="font-size:0.65rem; font-weight:600; color:var(--good); margin-bottom:5px;">✓ STRONG</div>
+                <div style="font-size:0.75rem; color:var(--text-dim);">Step 1: Identify root causes<br>Step 2: Map stakeholder impacts<br>Step 3: Evaluate solution options<br>Step 4: Recommend approach</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="height:1px; background:var(--border); margin:1.5rem 0;"></div>
+
+        <div style="margin-bottom:2rem;">
+          <div style="font-size:0.9rem; font-weight:600; color:var(--level2); margin-bottom:0.5rem;">Level 2: Structure the Thinking</div>
+          
+          <!-- Task Decomposition Examples -->
+          <div style="margin-bottom:1.5rem;">
+            <div style="font-size:0.82rem; font-weight:500; margin-bottom:0.5rem;">Task Decomposition</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+              <div style="background:var(--surface); border:1px solid var(--bad); border-radius:var(--radius); padding:10px;">
+                <div style="font-size:0.65rem; font-weight:600; color:var(--bad); margin-bottom:5px;">❌ WEAK</div>
+                <div style="font-size:0.75rem; color:var(--text-dim);">Create a comprehensive strategy document.</div>
+              </div>
+              <div style="background:var(--surface); border:1px solid var(--good); border-radius:var(--radius); padding:10px;">
+                <div style="font-size:0.65rem; font-weight:600; color:var(--good); margin-bottom:5px;">✓ STRONG</div>
+                <div style="font-size:0.75rem; color:var(--text-dim);">Stage 1: Analyze current state<br>Stage 2: Define success criteria<br>Stage 3: Generate options<br>Stage 4: Draft recommendations</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Decision Framework Examples -->
+          <div style="margin-bottom:1.5rem;">
+            <div style="font-size:0.82rem; font-weight:500; margin-bottom:0.5rem;">Decision Framework</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+              <div style="background:var(--surface); border:1px solid var(--bad); border-radius:var(--radius); padding:10px;">
+                <div style="font-size:0.65rem; font-weight:600; color:var(--bad); margin-bottom:5px;">❌ WEAK</div>
+                <div style="font-size:0.75rem; color:var(--text-dim);">Help me decide between these two options.</div>
+              </div>
+              <div style="background:var(--surface); border:1px solid var(--good); border-radius:var(--radius); padding:10px;">
+                <div style="font-size:0.65rem; font-weight:600; color:var(--good); margin-bottom:5px;">✓ STRONG</div>
+                <div style="font-size:0.75rem; color:var(--text-dim);">Option A: Build in-house<br>Option B: Buy vendor solution<br>Criteria: Cost, time, control<br>Method: Weighted scoring</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- GUIDE TAB -->
+      <div class="tab-content" id="tab-guide">
+        <div style="font-family:'DM Serif Display',serif; font-size:1.3rem; margin-bottom:1rem;">Framework Guide</div>
+
+        <!-- Level 1 -->
+        <div style="background:var(--surface); border-left:3px solid var(--gold); padding:1rem; margin-bottom:1rem; border-radius:var(--radius);">
+          <div style="font-size:0.85rem; font-weight:600; color:var(--gold); margin-bottom:0.5rem;">Level 1 — Structure the Prompt</div>
+          
+          <div style="margin-bottom:1rem;">
+            <div style="font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Structured Prompt</div>
+            <div style="font-size:0.78rem; color:var(--text-dim); line-height:1.6;">The foundation. Always include: Persona (who), Task (what), Context (why/for whom). Add Constraints and Format for control.</div>
+            <div style="font-size:0.72rem; color:var(--text-muted); margin-top:0.25rem; font-style:italic;">Use for: Any task. This is your starting point.</div>
+          </div>
+
+          <div style="margin-bottom:1rem;">
+            <div style="font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Few-Shot Prompt</div>
+            <div style="font-size:0.78rem; color:var(--text-dim); line-height:1.6;">Teach by example. Show 1-3 input/output pairs to establish the pattern you want. Model matches your examples.</div>
+            <div style="font-size:0.72rem; color:var(--text-muted); margin-top:0.25rem; font-style:italic;">Use for: Style matching, format replication, pattern recognition.</div>
+          </div>
+
+          <div>
+            <div style="font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Chain-of-Thought</div>
+            <div style="font-size:0.78rem; color:var(--text-dim); line-height:1.6;">Force step-by-step reasoning. Define 3-5 explicit thinking steps. Prevents shortcuts on complex problems.</div>
+            <div style="font-size:0.72rem; color:var(--text-muted); margin-top:0.25rem; font-style:italic;">Use for: Analysis, planning, multi-step problems, decision support.</div>
+          </div>
+        </div>
+
+        <!-- Level 2 -->
+        <div style="background:var(--surface); border-left:3px solid var(--level2); padding:1rem; margin-bottom:1.5rem; border-radius:var(--radius);">
+          <div style="font-size:0.85rem; font-weight:600; color:var(--level2); margin-bottom:0.5rem;">Level 2 — Structure the Thinking</div>
+          
+          <div style="margin-bottom:1rem;">
+            <div style="font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Task Decomposition</div>
+            <div style="font-size:0.78rem; color:var(--text-dim); line-height:1.6;">Break big tasks into sequential stages. Each stage produces input for the next. Reduces cognitive load.</div>
+            <div style="font-size:0.72rem; color:var(--text-muted); margin-top:0.25rem; font-style:italic;">Use for: Long reports, complex strategies, multi-phase projects.</div>
+          </div>
+
+          <div>
+            <div style="font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Decision Framework</div>
+            <div style="font-size:0.78rem; color:var(--text-dim); line-height:1.6;">Structured comparison of 2+ options. Define options, criteria, and evaluation method. Forces systematic thinking.</div>
+            <div style="font-size:0.72rem; color:var(--text-muted); margin-top:0.25rem; font-style:italic;">Use for: Go/no-go decisions, vendor selection, strategic choices.</div>
+          </div>
+        </div>
+
+        <div style="height:1px; background:var(--border); margin:1.5rem 0;"></div>
+
+        <!-- Common Mistakes -->
+        <div>
+          <div style="font-family:'DM Serif Display',serif; font-size:1.1rem; margin-bottom:0.75rem;">Common Mistakes</div>
+          <div style="font-size:0.8rem; color:var(--text-dim); line-height:1.8;">
+            <div style="margin-bottom:0.5rem;">• <strong>Vague personas:</strong> "Expert" → "Senior behavioral economist who explains concepts to executives"</div>
+            <div style="margin-bottom:0.5rem;">• <strong>Weak verbs:</strong> "Help me with..." → "Write / Analyze / Compare / Generate"</div>
+            <div style="margin-bottom:0.5rem;">• <strong>Missing constraints:</strong> Always specify length, tone, and audience</div>
+            <div style="margin-bottom:0.5rem;">• <strong>No examples:</strong> For style-sensitive work, show 1-2 examples</div>
+            <div style="margin-bottom:0.5rem;">• <strong>Skipping context:</strong> Model can't read your mind — state what matters</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PREVIEW -->
+
+
+
+    <!-- PREVIEW --><div class="preview-panel">
+      <div class="preview-header">
+        <div class="preview-title">
+          <div class="live-dot"></div>
+          Live Preview
+        </div>
+        <button class="btn-copy" id="copy-btn" onclick="copyPrompt()">
+          <span>⎘</span> Copy
+        </button>
+      </div>
+
+      <div class="preview-content" id="preview-content">
+        <!-- Quality Signals -->
+        <div style="padding:1rem; border-bottom:1px solid var(--border); background:var(--surface);">
+          <div style="font-size:0.68rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px;">Quality Signals</div>
+          <div class="status-items" id="quality-signals">
+            <div class="status-item">
+              <div class="status-dot"></div>
+              <span>Fill in fields to see feedback</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="prompt-empty-state" id="empty-state">
+          <div class="prompt-empty-icon">✦</div>
+          <div class="prompt-empty-text">Your structured prompt<br>will appear here as you type.</div>
+        </div>
+        <div class="prompt-output" id="prompt-output" style="display:none;"></div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Framework definitions
+const frameworks = {
+  basic: {
+    title: 'Structured Prompt Builder',
+    desc: 'Start with the fundamentals — persona, task, and context.',
+    fields: ['persona', 'task', 'context', 'constraints', 'format'],
+    status: 'Structured Prompt — Level 1'
+  },
+  fewshot: {
+    title: 'Few-Shot Prompt Builder',
+    desc: 'Teach by example — show the model exactly what good looks like.',
+    fields: ['persona', 'task', 'context', 'constraints', 'format', 'examples'],
+    status: 'Few-Shot — Level 1'
+  },
+  cot: {
+    title: 'Chain-of-Thought Builder',
+    desc: 'Force step-by-step reasoning for complex, multi-part problems.',
+    fields: ['persona', 'task', 'context', 'cot-steps', 'format'],
+    status: 'Chain-of-Thought — Level 1'
+  },
+  decompose: {
+    title: 'Task Decomposition',
+    desc: 'Break complex work into sequential thinking stages.',
+    fields: ['persona', 'task', 'context', 'decompose-steps', 'eval-criteria', 'format'],
+    status: 'Task Decomposition — Level 2'
+  },
+  decision: {
+    title: 'Decision Framework',
+    desc: 'Structured evaluation for go/no-go or comparative choices.',
+    fields: ['persona', 'task', 'context', 'decision-options', 'eval-criteria', 'decision-method', 'format'],
+    status: 'Decision Framework — Level 2'
+  }
+};
+
+let currentFramework = 'basic';
+
+// Framework selection
+function selectFramework(fw) {
+  console.log('Selecting framework:', fw);
+  currentFramework = fw;
+  const f = frameworks[fw];
+  
+  // Update sidebar
+  document.querySelectorAll('.framework-card').forEach(c => c.classList.remove('active'));
+  document.getElementById('fw-' + fw).classList.add('active');
+  
+  // Update header
+  document.getElementById('framework-title').textContent = f.title;
+  document.getElementById('framework-desc').textContent = f.desc;
+  
+  // Show/hide fields - THIS IS THE CRITICAL PART
+  const allFields = ['persona', 'task', 'context', 'constraints', 'format', 'examples', 'cot-steps', 'decompose-steps', 'eval-criteria', 'decision-options', 'decision-method'];
+  
+  allFields.forEach(field => {
+    const el = document.getElementById('field-' + field);
+    if (el) {
+      if (f.fields.includes(field)) {
+        el.classList.remove('hidden');
+      } else {
+        el.classList.add('hidden');
+      }
+    }
+  });
+  
+  update();
+}
+
+function getSteps(className) {
+  const steps = document.querySelectorAll('.' + className);
+  const vals = [];
+  steps.forEach((s, i) => {
+    if (s.value.trim()) {
+      const prefix = className === 'cot-step' ? 'Step' : 
+                     className === 'decompose-step' ? 'Stage' : 
+                     className === 'decision-option' ? 'Option' : 'Item';
+      const num = className === 'decision-option' ? String.fromCharCode(65 + i) : (i + 1);
+      vals.push(`${prefix} ${num}: ${s.value.trim()}`);
+    }
+  });
+  return vals.join('\n');
+}
+
+function getFormat() {
+  const fmt = document.getElementById('output-format').value;
+  const map = {
+    prose: 'Write in prose paragraphs.',
+    bullets: 'Format as a bulleted list.',
+    numbered: 'Format as a numbered list.',
+    table: 'Format as a structured table.',
+    headers: 'Use sections with clear headers.',
+    email: 'Format as a professional email.',
+    memo: 'Format as an internal memo.',
+    json: 'Return structured JSON only.',
+    stepbystep: 'Format as a step-by-step guide.'
+  };
+  return map[fmt] || '';
+}
+
+function getDecisionMethodText() {
+  const method = document.getElementById('decision-method').value;
+  const map = {
+    scoring: 'a scoring matrix (1-5 scale for each criterion)',
+    weighted: 'weighted criteria (assign importance to each)',
+    eliminate: 'elimination by must-have requirements'
+  };
+  return map[method] || '';
+}
+
+// Update preview
+// Helper function to get field values
+function getVal(id) {
+  const el = document.getElementById(id);
+  return el ? el.value.trim() : '';
+}
+
+function update() {
+  const persona = getVal('persona');
+  const task = getVal('task');
+  const context = getVal('context');
+  const constraints = getVal('constraints');
+  const format = getFormat();
+  const exampleIn = getVal('example-input');
+  const exampleOut = getVal('example-output');
+  const cotSteps = getSteps('cot-step');
+  const decomposeSteps = getSteps('decompose-step');
+  const evalCriteria = getVal('eval-criteria');
+  const decisionOptions = getSteps('decision-option');
+  const decisionMethod = getDecisionMethodText();
+  
+  if (!persona && !task && !context) {
+    document.getElementById('empty-state').style.display = 'block';
+    document.getElementById('prompt-output').style.display = 'none';
+    return;
+  }
+  
+  document.getElementById('empty-state').style.display = 'none';
+  document.getElementById('prompt-output').style.display = 'block';
+  
+  let html = '';
+  
+  if (persona) {
+    html += '<span class="prompt-key">[PERSONA]</span>\n';
+    html += `<span class="prompt-val">${esc(persona)}</span>\n\n`;
+  }
+  
+  if (task) {
+    html += '<span class="prompt-key">[TASK]</span>\n';
+    html += `<span class="prompt-val">${esc(task)}</span>\n\n`;
+  }
+  
+  if (context) {
+    html += '<span class="prompt-key">[CONTEXT]</span>\n';
+    html += `<span class="prompt-val">${esc(context)}</span>\n\n`;
+  }
+  
+  if (cotSteps) {
+    html += '<span class="prompt-key">[REASONING CHAIN]</span>\n';
+    html += `<span class="prompt-val">Think through this step by step:\n${esc(cotSteps)}</span>\n\n`;
+  }
+  
+  if (decomposeSteps) {
+    html += '<span class="prompt-key">[DECOMPOSITION]</span>\n';
+    html += `<span class="prompt-val">Break this down into stages:\n${esc(decomposeSteps)}</span>\n\n`;
+  }
+  
+  if (exampleIn || exampleOut) {
+    html += '<span class="prompt-key">[EXAMPLES]</span>\n';
+    html += '<span class="prompt-val">';
+    if (exampleIn) html += `Input: ${esc(exampleIn)}\n`;
+    if (exampleOut) html += `Output: ${esc(exampleOut)}`;
+    html += '</span>\n\n';
+  }
+  
+  if (decisionOptions) {
+    html += '<span class="prompt-key">[OPTIONS TO EVALUATE]</span>\n';
+    html += `<span class="prompt-val">${esc(decisionOptions)}</span>\n\n`;
+    if (decisionMethod) {
+      html += '<span class="prompt-key">[DECISION METHOD]</span>\n';
+      html += `<span class="prompt-val">Use ${esc(decisionMethod)} to evaluate and recommend</span>\n\n`;
+    }
+  }
+  
+  if (evalCriteria) {
+    html += '<span class="prompt-key">[EVALUATION CRITERIA]</span>\n';
+    html += `<span class="prompt-val">${esc(evalCriteria)}</span>\n\n`;
+  }
+  
+  // Constraints and Format on separate lines
+  if (constraints) {
+    html += '<span class="prompt-key">[CONSTRAINTS]</span>\n';
+    html += `<span class="prompt-val">${esc(constraints)}</span>\n\n`;
+  }
+  
+  if (format) {
+    html += '<span class="prompt-key">[OUTPUT FORMAT]</span>\n';
+    html += `<span class="prompt-val">${esc(format)}</span>`;
+  }
+  
+  document.getElementById('prompt-output').innerHTML = html;
+  updateQuality();
+}
+
+function esc(str) {
+  return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>');
+}
+
+// Copy function
+function copyPrompt() {
+  const persona = getVal('persona');
+  const task = getVal('task');
+  const context = getVal('context');
+  const constraints = getVal('constraints');
+  const format = getFormat();
+  const exampleIn = getVal('example-input');
+  const exampleOut = getVal('example-output');
+  const cotSteps = getSteps('cot-step');
+  const decomposeSteps = getSteps('decompose-step');
+  const evalCriteria = getVal('eval-criteria');
+  const decisionOptions = getSteps('decision-option');
+  const decisionMethod = getDecisionMethodText();
+  
+  let parts = [];
+  
+  if (persona) parts.push(`[PERSONA]\n${persona}`);
+  if (task) parts.push(`[TASK]\n${task}`);
+  if (context) parts.push(`[CONTEXT]\n${context}`);
+  if (cotSteps) parts.push(`[REASONING CHAIN]\nThink through this step by step:\n${cotSteps}`);
+  if (decomposeSteps) parts.push(`[DECOMPOSITION]\nBreak this down into stages:\n${decomposeSteps}`);
+  if (exampleIn || exampleOut) {
+    let ex = '[EXAMPLES]\n';
+    if (exampleIn) ex += `Input: ${exampleIn}\n`;
+    if (exampleOut) ex += `Output: ${exampleOut}`;
+    parts.push(ex);
+  }
+  if (decisionOptions) {
+    parts.push(`[OPTIONS TO EVALUATE]\n${decisionOptions}`);
+    if (decisionMethod) parts.push(`[DECISION METHOD]\nUse ${decisionMethod} to evaluate and recommend`);
+  }
+  if (evalCriteria) parts.push(`[EVALUATION CRITERIA]\n${evalCriteria}`);
+  
+  if (constraints) parts.push(`[CONSTRAINTS]\n${constraints}`);
+  if (format) parts.push(`[OUTPUT FORMAT]\n${format}`);
+  
+  const text = parts.join('\n\n');
+  
+  if (!text) {
+    alert('Please fill in some fields first!');
+    return;
+  }
+  
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.innerHTML = '<span>✓</span> Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.innerHTML = '<span>⎘</span> Copy';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
+// Dynamic step adders
+function addCotStep() {
+  const container = document.getElementById('cot-steps');
+  const count = container.querySelectorAll('.step-item').length + 1;
+  const div = document.createElement('div');
+  div.className = 'step-item';
+  div.innerHTML = `<div class="step-num">${count}</div><textarea class="cot-step" placeholder="Then..." oninput="update()"></textarea>`;
+  container.appendChild(div);
+}
+
+function addDecomposeStep() {
+  const container = document.getElementById('decompose-steps');
+  const count = container.querySelectorAll('.step-item').length + 1;
+  const div = document.createElement('div');
+  div.className = 'step-item';
+  div.innerHTML = `<div class="step-num">${count}</div><textarea class="decompose-step" placeholder="Stage ${count}..." oninput="update()"></textarea>`;
+  container.appendChild(div);
+}
+
+function addDecisionOption() {
+  const container = document.getElementById('decision-options');
+  const count = container.querySelectorAll('.step-item').length;
+  const letter = String.fromCharCode(67 + count - 2); // C, D, E, etc.
+  const div = document.createElement('div');
+  div.className = 'step-item';
+  div.innerHTML = `<div class="step-num">${letter}</div><textarea class="decision-option" placeholder="Option ${letter}..." oninput="update()"></textarea>`;
+  container.appendChild(div);
+}
+
+// Reset
+function resetAll() {
+  ['persona', 'task', 'context', 'constraints', 'example-input', 'example-output', 'eval-criteria'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  document.getElementById('output-format').value = '';
+  const decMethod = document.getElementById('decision-method');
+  if (decMethod) decMethod.value = '';
+  
+  document.querySelectorAll('.cot-step, .decompose-step, .decision-option').forEach(s => s.value = '');
+  update();
+}
+
+
+// Tab switching
+function switchTab(tabName) {
+  // Update tab buttons
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  
+  // Update tab content
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + tabName).classList.add('active');
+}
+
+
+// Quality Signals
+function updateQuality() {
+  const persona = getVal('persona');
+  const task = getVal('task');
+  const context = getVal('context');
+  const constraints = getVal('constraints');
+  const format = getFormat();
+  
+  const signals = [];
+  
+  // Persona check
+  if (!persona) {
+    signals.push({ type: 'bad', msg: 'No persona — model has no role context' });
+  } else if (persona.length < 20) {
+    signals.push({ type: 'warn', msg: 'Persona brief — add expertise level' });
+  } else {
+    signals.push({ type: 'good', msg: 'Persona well defined' });
+  }
+  
+  // Task check
+  if (!task) {
+    signals.push({ type: 'bad', msg: 'No task — nothing to produce' });
+  } else if (task.length < 20) {
+    signals.push({ type: 'warn', msg: 'Task vague — be more specific' });
+  } else {
+    signals.push({ type: 'good', msg: 'Task is specific and actionable' });
+  }
+  
+  // Context check
+  if (context && context.length > 10) {
+    signals.push({ type: 'good', msg: 'Context provided' });
+  } else if (!context) {
+    signals.push({ type: 'warn', msg: 'Add context to avoid wrong assumptions' });
+  }
+  
+  // Format/constraints
+  if (constraints || format) {
+    signals.push({ type: 'good', msg: 'Constraints or format specified' });
+  } else {
+    signals.push({ type: 'warn', msg: 'Add constraints for better control' });
+  }
+  
+  // Level 2 bonus
+  if (currentFramework === 'decompose' || currentFramework === 'decision') {
+    signals.push({ type: 'good', msg: 'Using Level 2 cognitive structure' });
+  }
+  
+  // Render
+  const container = document.getElementById('quality-signals');
+  if (!container) return;
+  
+  if (signals.length === 0 || (!persona && !task)) {
+    container.innerHTML = '<div class="status-item"><div class="status-dot"></div><span>Fill in fields to see feedback</span></div>';
+  } else {
+    container.innerHTML = signals.slice(0,5).map(s => 
+      `<div class="status-item ${s.type}"><div class="status-dot"></div><span>${s.msg}</span></div>`
+    ).join('');
+  }
+}
+
+
+// Library
+let savedPrompts = JSON.parse(localStorage.getItem('etc_prompts') || '[]');
+
+function savePrompt() {
+  const name = document.getElementById('save-name').value.trim() || 'Untitled';
+  const tag = document.getElementById('save-tag').value.trim() || currentFramework;
+  
+  // Save ALL fields including framework-specific ones
+  const fields = {
+    persona: getVal('persona'),
+    task: getVal('task'),
+    context: getVal('context'),
+    constraints: getVal('constraints'),
+    format: document.getElementById('output-format').value,
+    // Few-Shot fields
+    exampleInput: getVal('example-input'),
+    exampleOutput: getVal('example-output'),
+    // COT fields
+    cotSteps: getSteps('cot-step'),
+    // Level 2 fields
+    decomposeSteps: getSteps('decompose-step'),
+    evalCriteria: getVal('eval-criteria'),
+    decisionOptions: getSteps('decision-option'),
+    decisionMethod: document.getElementById('decision-method') ? document.getElementById('decision-method').value : ''
+  };
+  
+  savedPrompts.unshift({
+    id: Date.now(),
+    name: name,
+    tag: tag,
+    framework: currentFramework,
+    date: new Date().toLocaleDateString(),
+    fields: fields
+  });
+  
+  localStorage.setItem('etc_prompts', JSON.stringify(savedPrompts));
+  document.getElementById('save-name').value = '';
+  document.getElementById('save-tag').value = '';
+  showToast('Saved: ' + name);
+}
+
+function openLibrary() {
+  document.getElementById('library-search').value = '';
+  const container = document.getElementById('modal-library-content');
+  if (savedPrompts.length === 0) {
+    container.innerHTML = '<div style="text-align:center; color:var(--text-muted); padding:2rem;">No saved prompts yet.</div>';
+  } else {
+    container.innerHTML = savedPrompts.map(p => `
+      <div class="lib-item" onclick="loadPrompt(${p.id})" style="cursor:pointer;" title="Click to load this prompt">
+        <div class="lib-item-name">${p.name}</div>
+        <div class="lib-item-meta">
+          <span>${p.date}</span>
+          <span class="lib-item-tag">${p.tag}</span>
+        </div>
+        <button class="lib-delete" onclick="event.stopPropagation(); deletePrompt(${p.id})">✕</button>
+      </div>
+    `).join('');
+  }
+  document.getElementById('library-modal').classList.add('open');
+}
+
+function closeLibrary() {
+  document.getElementById('library-modal').classList.remove('open');
+}
+
+function loadPrompt(id) {
+  console.log('Loading prompt:', id);
+  const p = savedPrompts.find(x => x.id === id);
+  if (!p) {
+    console.error('Prompt not found:', id);
+    return;
+  }
+  
+  // Switch framework first
+  selectFramework(p.framework);
+  
+  // Wait for fields to render
+  setTimeout(() => {
+    console.log('Populating all fields:', p.fields);
+    
+    // Load basic fields
+    if (p.fields.persona) document.getElementById('persona').value = p.fields.persona;
+    if (p.fields.task) document.getElementById('task').value = p.fields.task;
+    if (p.fields.context) document.getElementById('context').value = p.fields.context;
+    if (p.fields.constraints) document.getElementById('constraints').value = p.fields.constraints;
+    if (p.fields.format) document.getElementById('output-format').value = p.fields.format;
+    
+    // Load Few-Shot fields
+    if (p.fields.exampleInput) {
+      const exIn = document.getElementById('example-input');
+      if (exIn) exIn.value = p.fields.exampleInput;
+    }
+    if (p.fields.exampleOutput) {
+      const exOut = document.getElementById('example-output');
+      if (exOut) exOut.value = p.fields.exampleOutput;
+    }
+    
+    // Load COT fields (restore step by step)
+    if (p.fields.cotSteps) {
+      const steps = p.fields.cotSteps.split('\n').filter(s => s.trim());
+      const container = document.getElementById('cot-steps');
+      if (container) {
+        // Clear existing
+        container.innerHTML = '';
+        // Add saved steps
+        steps.forEach((step, i) => {
+          const text = step.replace(/^Step \d+: /, '');
+          const div = document.createElement('div');
+          div.className = 'step-item';
+          div.innerHTML = `<div class="step-num">${i+1}</div><textarea class="cot-step" oninput="update()">${text}</textarea>`;
+          container.appendChild(div);
+        });
+      }
+    }
+    
+    // Load decompose steps
+    if (p.fields.decomposeSteps) {
+      const steps = p.fields.decomposeSteps.split('\n').filter(s => s.trim());
+      const container = document.getElementById('decompose-steps');
+      if (container) {
+        container.innerHTML = '';
+        steps.forEach((step, i) => {
+          const text = step.replace(/^Stage \d+: /, '');
+          const div = document.createElement('div');
+          div.className = 'step-item';
+          div.innerHTML = `<div class="step-num">${i+1}</div><textarea class="decompose-step" oninput="update()">${text}</textarea>`;
+          container.appendChild(div);
+        });
+      }
+    }
+    
+    // Load eval criteria
+    if (p.fields.evalCriteria) {
+      const evalEl = document.getElementById('eval-criteria');
+      if (evalEl) evalEl.value = p.fields.evalCriteria;
+    }
+    
+    // Load decision options
+    if (p.fields.decisionOptions) {
+      const options = p.fields.decisionOptions.split('\n').filter(s => s.trim());
+      const container = document.getElementById('decision-options');
+      if (container) {
+        container.innerHTML = '';
+        options.forEach((opt, i) => {
+          const text = opt.replace(/^Option [A-Z]: /, '');
+          const letter = String.fromCharCode(65 + i);
+          const div = document.createElement('div');
+          div.className = 'step-item';
+          div.innerHTML = `<div class="step-num">${letter}</div><textarea class="decision-option" oninput="update()">${text}</textarea>`;
+          container.appendChild(div);
+        });
+      }
+    }
+    
+    // Load decision method
+    if (p.fields.decisionMethod) {
+      const methodEl = document.getElementById('decision-method');
+      if (methodEl) methodEl.value = p.fields.decisionMethod;
+    }
+    
+    console.log('All fields loaded');
+    update();
+  }, 100);
+  
+  closeLibrary();
+  showToast('Loaded: ' + p.name);
+}
+
+function deletePrompt(id) {
+  savedPrompts = savedPrompts.filter(x => x.id !== id);
+  localStorage.setItem('etc_prompts', JSON.stringify(savedPrompts));
+  openLibrary();
+  showToast('Deleted');
+}
+
+
+function filterLibrary() {
+  const search = document.getElementById('library-search').value.toLowerCase();
+  const filtered = search ? savedPrompts.filter(p => 
+    p.name.toLowerCase().includes(search) || 
+    p.tag.toLowerCase().includes(search)
+  ) : savedPrompts;
+  
+  const container = document.getElementById('modal-library-content');
+  if (filtered.length === 0) {
+    container.innerHTML = '<div style="text-align:center; color:var(--text-muted); padding:2rem;">No prompts match your search.</div>';
+  } else {
+    container.innerHTML = filtered.map(p => `
+      <div class="lib-item" onclick="loadPrompt(${p.id})" style="cursor:pointer;" title="Click to load this prompt">
+        <div class="lib-item-name">${p.name}</div>
+        <div class="lib-item-meta">
+          <span>${p.date}</span>
+          <span class="lib-item-tag">${p.tag}</span>
+        </div>
+        <button class="lib-delete" onclick="event.stopPropagation(); deletePrompt(${p.id})">✕</button>
+      </div>
+    `).join('');
+  }
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+
+// Theme Management
+function toggleTheme() {
+  const html = document.documentElement;
+  const currentTheme = html.getAttribute('data-theme') || 'light';
+  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+  
+  html.setAttribute('data-theme', newTheme);
+  localStorage.setItem('etc_theme', newTheme);
+  
+  // Update button icon
+  const btn = document.getElementById('theme-toggle');
+  btn.textContent = newTheme === 'light' ? '☀️' : '🌙';
+  btn.title = newTheme === 'light' ? 'Switch to dark mode' : 'Switch to light mode';
+}
+
+// Load saved theme on page load
+(function loadTheme() {
+  const savedTheme = localStorage.getItem('etc_theme') || 'light'; // Default to light
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  const btn = document.getElementById('theme-toggle');
+  if (btn) {
+    btn.textContent = savedTheme === 'light' ? '☀️' : '🌙';
+    btn.title = savedTheme === 'light' ? 'Switch to dark mode' : 'Switch to light mode';
+  }
+})();
+
+// Initialize
+update();
+</script>
+
+
+<div class="modal-overlay" id="library-modal" onclick="if(event.target.id==='library-modal')closeLibrary()">
+  <div class="modal">
+    <div class="modal-title">
+      <button class="modal-close" onclick="closeLibrary()">✕</button>
+      Prompt Library
+    </div>
+    <input type="text" id="library-search" placeholder="Search by name or tag..." oninput="filterLibrary()" style="width:100%; margin-bottom:1rem; padding:8px 12px; background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius); color:var(--text); font-size:0.85rem;">
+    <div id="modal-library-content"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+</body>
+</html>
