@@ -160,6 +160,72 @@
     overflow: hidden;
   }
 
+  /* Mobile: Stack everything vertically */
+  @media (max-width: 1024px) {
+    .main {
+      grid-template-columns: 1fr;
+      height: auto;
+      overflow: visible;
+    }
+    
+    .sidebar {
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+      max-height: none;
+      padding: 1rem;
+    }
+    
+    .builder {
+      padding: 1rem;
+      max-height: none;
+    }
+    
+    .preview-panel {
+      border-left: none;
+      border-top: 1px solid var(--border);
+      min-height: 400px;
+    }
+    
+    header {
+      padding: 0 1rem;
+    }
+    
+    .logo-name {
+      display: none; /* Hide on mobile to save space */
+    }
+    
+    .tabs {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .tab {
+      white-space: nowrap;
+    }
+  }
+
+  /* Tablet: 2-column layout */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .main {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+    }
+    
+    .sidebar {
+      grid-column: 1 / -1; /* Span full width */
+    }
+    
+    .builder {
+      grid-column: 1;
+    }
+    
+    .preview-panel {
+      grid-column: 2;
+      border-left: 1px solid var(--border);
+      border-top: none;
+    }
+  }
+
   .sidebar {
     border-right: 1px solid var(--border);
     overflow-y: auto;
@@ -643,7 +709,33 @@
   }
   .toast.show { transform: translateY(0); opacity: 1; }
 
-</style>
+
+  /* Mobile-friendly touch targets */
+  @media (max-width: 768px) {
+    .btn-ghost, .btn-copy {
+      padding: 8px 12px;
+      font-size: 0.85rem;
+    }
+    
+    .framework-card {
+      padding: 14px;
+    }
+    
+    input[type="text"],
+    textarea,
+    select {
+      font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    .builder-title {
+      font-size: 1.3rem;
+    }
+    
+    .modal {
+      width: 95vw;
+      padding: 1.5rem;
+    }
+  }</style>
 </head>
 <body>
 
