@@ -748,6 +748,35 @@
       gap: 10px;
     }
   }
+
+  /* Bullet toggle button */
+  .bullet-toggle {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Mono', monospace;
+  }
+  
+  .bullet-toggle:hover {
+    background: var(--surface2);
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  
+  .bullet-toggle.active {
+    background: var(--gold-dim);
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+  
+  #context-toggle-icon {
+    font-weight: 600;
+  }
 </style>
 </head>
 <body>
@@ -856,6 +885,9 @@
             <span class="field-required"></span>
             Context
           </label>
+          <button type="button" class="bullet-toggle" id="context-bullet-toggle" onclick="toggleBullets('context')" title="Toggle bullet format">
+            <span id="context-toggle-icon">•</span> Bullets
+          </button>
         </div>
         <textarea id="context" placeholder="e.g. This is a Fortune 500 company with 8,000 employees..." oninput="update()"></textarea>
         <div class="field-hint">Who's involved? What's the situation? What constraints exist?</div>
@@ -1916,6 +1948,40 @@ function toggleTheme() {
 
 // Initialize
 update();
+
+// Toggle bullet formatting for textareas
+function toggleBullets(fieldId) {
+  const textarea = document.getElementById(fieldId);
+  const button = event.currentTarget;
+  const icon = document.getElementById(fieldId + '-toggle-icon');
+  
+  // Check if already in bullet mode
+  const isBulletMode = button.classList.contains('active');
+  
+  if (isBulletMode) {
+    // Convert bullets back to plain text
+    const lines = textarea.value.split('\n');
+    const plainLines = lines.map(line => line.replace(/^[•\-*]\s*/, ''));
+    textarea.value = plainLines.join('\n');
+    button.classList.remove('active');
+    icon.textContent = '•';
+  } else {
+    // Convert to bullets
+    const lines = textarea.value.split('\n').filter(line => line.trim());
+    const bulletLines = lines.map(line => {
+      // Don't add bullet if already has one
+      if (line.match(/^[•\-*]\s/)) return line;
+      return '• ' + line.trim();
+    });
+    textarea.value = bulletLines.join('\n');
+    button.classList.add('active');
+    icon.textContent = '✓';
+  }
+  
+  // Trigger update to refresh preview
+  update();
+}
+
 </script>
 
 
