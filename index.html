@@ -180,11 +180,7 @@
       max-height: none;
     }
     
-    .preview-panel {
-      border-left: none;
-      border-top: 1px solid var(--border);
-      min-height: 400px;
-    }
+    
     
     header {
       padding: 0 1rem;
@@ -219,11 +215,7 @@
       grid-column: 1;
     }
     
-    .preview-panel {
-      grid-column: 2;
-      border-left: 1px solid var(--border);
-      border-top: none;
-    }
+    
   }
 
   .sidebar {
@@ -462,12 +454,7 @@
     color: var(--gold); 
   }
 
-  .preview-panel {
-    border-left: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
+  
 
   .preview-header {
     padding: 1rem 1.5rem;
@@ -520,12 +507,7 @@
   .btn-copy:hover { background: var(--gold-light); }
   .btn-copy.copied { background: var(--good); color: #fff; }
 
-  .preview-content {
-    flex: 1;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-  }
+  
 
   .prompt-output {
     font-family: 'DM Mono', monospace;
@@ -776,6 +758,23 @@
   
   #context-toggle-icon {
     font-weight: 600;
+  }
+  
+  /* Fix preview panel height and scroll */
+  .preview-panel {
+    background: var(--bg);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 64px);
+  }
+  
+  .preview-content {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0; /* Critical for flex scroll */
   }
 </style>
 </head>
@@ -1469,6 +1468,12 @@
       </div>
 
       <div class="preview-content" id="preview-content">
+        <div class="prompt-empty-state" id="empty-state">
+          <div class="prompt-empty-icon">✦</div>
+          <div class="prompt-empty-text">Your structured prompt<br>will appear here as you type.</div>
+        </div>
+        <div class="prompt-output" id="prompt-output" style="display:none;"></div>
+
         <!-- Quality Signals -->
         <div style="padding:1rem; border-bottom:1px solid var(--border); background:var(--surface);">
           <div style="font-size:0.68rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px;">Quality Signals</div>
