@@ -860,7 +860,7 @@
 
     <!-- BUILDER -->
     <div class="builder">
-      <div class="builder-header">
+      <div class="builder-header" id="builder-header">
         <div class="builder-title" id="framework-title">Structured Prompt Builder</div>
         <div class="builder-subtitle" id="framework-desc">Start with the fundamentals — persona, task, and context.</div>
       </div>
@@ -1320,6 +1320,8 @@
 
       <!-- HELP TAB -->
       <div class="tab-content" id="tab-help" style="display:none;">
+        <div style="font-family:'DM Serif Display',serif; font-size:1.8rem; margin-bottom:1.5rem; padding-bottom:1rem; border-bottom:1px solid var(--border);">Help & FAQ</div>
+
         <div style="font-family:'DM Serif Display',serif; font-size:1.3rem; margin-bottom:1rem;">Help & FAQ</div>
 
         <!-- Getting Started -->
@@ -1845,6 +1847,12 @@ function switchTab(tabName) {
       btn.classList.add('active');
     }
   });
+  
+  // Hide builder header on Help tab
+  const builderHeader = document.getElementById('builder-header');
+  if (builderHeader) {
+    builderHeader.style.display = (tabName === 'help') ? 'none' : 'block';
+  }
   
   // Toggle layout for Help tab
   const mainGrid = document.querySelector('.main');
