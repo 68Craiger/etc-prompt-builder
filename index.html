@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- ETC Prompt Builder v1.2.6 - Final Fix - March 4, 2026 -->
+<!-- ETC Prompt Builder v1.2.7 - Final Fix - March 4, 2026 -->
 <html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
@@ -837,7 +837,7 @@
     </div>
   </header>
 
-  <div class="main">
+  <div class="main" id="main-grid">
     <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="sidebar-section">
@@ -1847,54 +1847,55 @@ function resetAll() {
 // Tab switching
 function switchTab(tabName) {
   // Hide all tab contents
-  const allTabs = document.querySelectorAll('.tab-content');
-  allTabs.forEach(tab => tab.style.display = 'none');
+  document.querySelectorAll('.tab-content').forEach(tab => tab.style.display = 'none');
   
-  // Remove active class from all tab buttons
-  const allButtons = document.querySelectorAll('.tab');
-  allButtons.forEach(btn => btn.classList.remove('active'));
+  // Remove active from all buttons
+  document.querySelectorAll('.tab').forEach(btn => btn.classList.remove('active'));
   
-  // Show the selected tab content
+  // Show selected tab
   const selectedTab = document.getElementById('tab-' + tabName);
-  if (selectedTab) {
-    selectedTab.style.display = 'block';
-  }
+  if (selectedTab) selectedTab.style.display = 'block';
   
-  // Add active class to clicked tab button
-  const buttons = document.querySelectorAll('.tab');
-  buttons.forEach(btn => {
-    const onclick = btn.getAttribute('onclick');
-    if (onclick && onclick.includes("'" + tabName + "'")) {
+  // Activate button
+  document.querySelectorAll('.tab').forEach(btn => {
+    if (btn.getAttribute('onclick').includes("'" + tabName + "'")) {
       btn.classList.add('active');
     }
   });
   
-  // Hide builder header on Help tab
+  // For Help tab: completely different layout
+  const mainGrid = document.getElementById('main-grid');
   const builderHeader = document.getElementById('builder-header');
-  if (builderHeader) {
-    builderHeader.style.display = (tabName === 'help') ? 'none' : 'block';
-  }
-  
-  // Hide/show sidebar for Help tab
-  const sidebar = document.querySelector('.sidebar');
-  if (sidebar) {
-    sidebar.style.display = (tabName === 'help') ? 'none' : 'block';
-  }
-  
-  // Toggle layout for Help tab
-  const mainGrid = document.querySelector('.main');
-  const previewPanel = document.querySelector('.preview-panel');
   
   if (tabName === 'help') {
-    // Help tab: hide preview, expand builder
-    if (mainGrid) mainGrid.classList.add('help-active');
-    if (previewPanel) previewPanel.style.display = 'none';
+    // Help tab: Use absolute positioning to overlay full width
+    if (selectedTab) {
+      selectedTab.style.position = 'fixed';
+      selectedTab.style.top = '64px';
+      selectedTab.style.left = '0';
+      selectedTab.style.right = '0';
+      selectedTab.style.bottom = '0';
+      selectedTab.style.background = 'var(--bg)';
+      selectedTab.style.padding = '2rem 3rem';
+      selectedTab.style.overflowY = 'auto';
+      selectedTab.style.zIndex = '10';
+    }
+    if (builderHeader) builderHeader.style.display = 'none';
   } else {
-    // Other tabs: show preview, normal layout
-    if (mainGrid) mainGrid.classList.remove('help-active');
-    if (previewPanel) previewPanel.style.display = 'flex';
+    // Other tabs: Reset Help tab positioning
+    const helpTab = document.getElementById('tab-help');
+    if (helpTab) {
+      helpTab.style.position = '';
+      helpTab.style.top = '';
+      helpTab.style.left = '';
+      helpTab.style.right = '';
+      helpTab.style.bottom = '';
+      helpTab.style.zIndex = '';
+    }
+    if (builderHeader) builderHeader.style.display = 'block';
   }
 }
+
 
 
 
