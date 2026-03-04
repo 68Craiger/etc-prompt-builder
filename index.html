@@ -199,6 +199,13 @@
       white-space: nowrap;
     }
   }
+  .builder {
+    padding: 1.5rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 64px);
+    background: var(--bg);
+  }
+
 
   /* Tablet: 2-column layout */
   @media (min-width: 768px) and (max-width: 1024px) {
@@ -867,7 +874,7 @@
       </div>
 
       <!-- BUILD TAB CONTENT -->
-      <div class="tab-content active" id="tab-build">
+      <div class="tab-content" id="tab-build" style="display:block;">
 
       <!-- Persona -->
       <div class="field-group" id="field-persona">
@@ -1047,7 +1054,7 @@
       </div><!-- End Build Tab -->
 
       <!-- EXAMPLES TAB -->
-      <div class="tab-content" id="tab-examples">
+      <div class="tab-content" id="tab-examples" style="display:none;">
         <div style="margin-bottom:2rem;">
           <div style="font-size:0.9rem; font-weight:600; color:var(--gold); margin-bottom:0.5rem;">Level 1: Structure the Prompt</div>
           
@@ -1250,7 +1257,7 @@
       </div>
 
       <!-- GUIDE TAB -->
-      <div class="tab-content" id="tab-guide">
+      <div class="tab-content" id="tab-guide" style="display:none;">
         <div style="font-family:'DM Serif Display',serif; font-size:1.3rem; margin-bottom:1rem;">Framework Guide</div>
 
         <!-- Level 1 -->
@@ -1312,7 +1319,7 @@
 
 
       <!-- HELP TAB -->
-      <div class="tab-content" id="tab-help">
+      <div class="tab-content" id="tab-help" style="display:none;">
         <div style="font-family:'DM Serif Display',serif; font-size:1.3rem; margin-bottom:1rem;">Help & FAQ</div>
 
         <!-- Getting Started -->
