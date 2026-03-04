@@ -760,21 +760,31 @@
     font-weight: 600;
   }
   
-  /* Fix preview panel height and scroll */
+  
+
+  /* Preview Panel - Right Column */
   .preview-panel {
     background: var(--bg);
     border-left: 1px solid var(--border);
     display: flex;
     flex-direction: column;
-    max-height: calc(100vh - 64px);
+    height: calc(100vh - 64px);
+    overflow: hidden;
+  }
+  
+  .preview-header {
+    flex-shrink: 0;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   
   .preview-content {
     flex: 1;
     overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    min-height: 0; /* Critical for flex scroll */
+    overflow-x: hidden;
   }
 </style>
 </head>
