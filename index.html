@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- ETC Prompt Builder v1.2.5 - Final Fix - March 4, 2026 -->
+<!-- ETC Prompt Builder v1.2.6 - Final Fix - March 4, 2026 -->
 <html lang="en" data-theme="light">
 <head>
 <meta charset="UTF-8">
@@ -797,16 +797,21 @@
 
   /* Help tab full width when preview hidden */
   .main.help-active {
-    grid-template-columns: 1fr;
-    grid-template-areas: "content";
+    grid-template-columns: 0 1fr 0;
   }
   
   .main.help-active .sidebar {
     display: none;
+    width: 0;
+    min-width: 0;
+    overflow: hidden;
   }
   
   .main.help-active .preview-panel {
     display: none;
+    width: 0;
+    min-width: 0;
+    overflow: hidden;
   }
 
   /* Help tab: Builder full width with proper padding */
