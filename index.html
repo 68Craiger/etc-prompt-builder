@@ -1478,14 +1478,8 @@
       </div>
 
       <div class="preview-content" id="preview-content">
-        <div class="prompt-empty-state" id="empty-state">
-          <div class="prompt-empty-icon">✦</div>
-          <div class="prompt-empty-text">Your structured prompt<br>will appear here as you type.</div>
-        </div>
-        <div class="prompt-output" id="prompt-output" style="display:none;"></div>
-
-        <!-- Quality Signals -->
-        <div style="padding:1rem; border-bottom:1px solid var(--border); background:var(--surface);">
+        <!-- Quality Signals at top -->
+        <div style="padding:1rem; border-bottom:1px solid var(--border); background:var(--surface); flex-shrink:0;">
           <div style="font-size:0.68rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.1em; margin-bottom:8px;">Quality Signals</div>
           <div class="status-items" id="quality-signals">
             <div class="status-item">
@@ -1495,11 +1489,14 @@
           </div>
         </div>
 
-        <div class="prompt-empty-state" id="empty-state">
-          <div class="prompt-empty-icon">✦</div>
-          <div class="prompt-empty-text">Your structured prompt<br>will appear here as you type.</div>
+        <!-- Prompt preview area -->
+        <div style="flex:1; padding:1.5rem;">
+          <div class="prompt-empty-state" id="empty-state">
+            <div class="prompt-empty-icon">✦</div>
+            <div class="prompt-empty-text">Your structured prompt<br>will appear here as you type.</div>
+          </div>
+          <div class="prompt-output" id="prompt-output" style="display:none;"></div>
         </div>
-        <div class="prompt-output" id="prompt-output" style="display:none;"></div>
       </div>
       </div>
     </div>
