@@ -1816,34 +1816,44 @@ function resetAll() {
 
 // Tab switching
 function switchTab(tabName) {
-  // Hide all tabs
-  document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  // Hide all tab contents
+  const allTabs = document.querySelectorAll('.tab-content');
+  allTabs.forEach(tab => tab.style.display = 'none');
   
-  // Show selected tab
-  document.getElementById('tab-' + tabName).style.display = 'block';
-  document.querySelector('[onclick*="switchTab('' + tabName + '')"]').classList.add('active');
+  // Remove active class from all tab buttons
+  const allButtons = document.querySelectorAll('.tab');
+  allButtons.forEach(btn => btn.classList.remove('active'));
   
-  // Toggle grid layout for Help tab
-  const mainGrid = document.querySelector('.main');
-  if (mainGrid) {
-    if (tabName === 'help') {
-      mainGrid.classList.add('help-active');
-    } else {
-      mainGrid.classList.remove('help-active');
-    }
+  // Show the selected tab content
+  const selectedTab = document.getElementById('tab-' + tabName);
+  if (selectedTab) {
+    selectedTab.style.display = 'block';
   }
   
-  // Hide preview panel when Help tab is active (desktop only)
-  const previewPanel = document.querySelector('.preview-panel');
-  if (previewPanel) {
-    if (tabName === 'help') {
-      previewPanel.style.display = 'none';
-    } else {
-      previewPanel.style.display = 'flex';
+  // Add active class to clicked tab button
+  const buttons = document.querySelectorAll('.tab');
+  buttons.forEach(btn => {
+    const onclick = btn.getAttribute('onclick');
+    if (onclick && onclick.includes("'" + tabName + "'")) {
+      btn.classList.add('active');
     }
+  });
+  
+  // Toggle layout for Help tab
+  const mainGrid = document.querySelector('.main');
+  const previewPanel = document.querySelector('.preview-panel');
+  
+  if (tabName === 'help') {
+    // Help tab: hide preview, expand builder
+    if (mainGrid) mainGrid.classList.add('help-active');
+    if (previewPanel) previewPanel.style.display = 'none';
+  } else {
+    // Other tabs: show preview, normal layout
+    if (mainGrid) mainGrid.classList.remove('help-active');
+    if (previewPanel) previewPanel.style.display = 'flex';
   }
 }
+
 
 
 // Quality Signals
