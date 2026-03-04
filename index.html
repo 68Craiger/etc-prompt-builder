@@ -849,6 +849,7 @@
         <div class="tab active" onclick="switchTab('build')">Build</div>
         <div class="tab" onclick="switchTab('examples')">Examples</div>
         <div class="tab" onclick="switchTab('guide')">Guide</div>
+        <div class="tab" onclick="switchTab('help')">Help</div>
       </div>
 
       <!-- BUILD TAB CONTENT -->
@@ -1295,7 +1296,164 @@
 
     </div>
 
-    <!-- PREVIEW -->
+
+      <!-- HELP TAB -->
+      <div class="tab-content" id="tab-help">
+        <div style="font-family:'DM Serif Display',serif; font-size:1.3rem; margin-bottom:1rem;">Help & FAQ</div>
+
+        <!-- Getting Started -->
+        <div style="background:var(--surface); border-left:3px solid var(--gold); padding:1rem; margin-bottom:1rem; border-radius:var(--radius);">
+          <div style="font-size:0.85rem; font-weight:600; color:var(--gold); margin-bottom:0.5rem;">Getting Started</div>
+          
+          <div style="margin-bottom:1rem;">
+            <div style="font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">How do I create my first prompt?</div>
+            <div style="font-size:0.78rem; color:var(--text-dim); line-height:1.6;">
+              1. Select "Structured Prompt" from the sidebar<br>
+              2. Fill in Persona, Task, and Context<br>
+              3. Watch the Live Preview update<br>
+              4. Check Quality Signals for feedback<br>
+              5. Click Copy when ready
+            </div>
+          </div>
+
+          <div style="margin-bottom:1rem;">
+            <div style="font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">What do the colors mean in Quality Signals?</div>
+            <div style="font-size:0.78rem; color:var(--text-dim); line-height:1.6;">
+              <span style="color:var(--good)">● Green</span> = Good to go!<br>
+              <span style="color:var(--warn)">● Yellow</span> = Could be more specific<br>
+              <span style="color:var(--bad)">● Red</span> = Missing critical information
+            </div>
+          </div>
+
+          <div>
+            <div style="font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Which framework should I use?</div>
+            <div style="font-size:0.78rem; color:var(--text-dim); line-height:1.6;">
+              Start with <strong>Structured Prompt</strong> for any task. Use <strong>Few-Shot</strong> when showing examples is easier than explaining. Use <strong>Chain-of-Thought</strong> for analysis or multi-step problems. Level 2 frameworks are for advanced use cases.
+            </div>
+          </div>
+        </div>
+
+        <!-- Library & Backup -->
+        <div style="background:var(--surface); border-left:3px solid var(--gold); padding:1rem; margin-bottom:1rem; border-radius:var(--radius);">
+          <div style="font-size:0.85rem; font-weight:600; color:var(--gold); margin-bottom:0.5rem;">Library & Backup</div>
+          
+          <div style="margin-bottom:1rem;">
+            <div style="font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">How do I save my prompts?</div>
+            <div style="font-size:0.78rem; color:var(--text-dim); line-height:1.6;">
+              1. Fill in your prompt fields<br>
+              2. Scroll to "Save to Library" at bottom<br>
+              3. Enter a name and tag<br>
+              4. Click Save<br>
+              Your prompts are automatically stored in your browser.
+            </div>
+          </div>
+
+          <div style="margin-bottom:1rem;">
+            <div style="font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Why should I export my library?</div>
+            <div style="font-size:0.78rem; color:var(--text-dim); line-height:1.6;">
+              Browser data can be lost if you clear cookies, use a different browser, or experience technical issues. Click <strong>📚 Library → ⬇ Export Library</strong> to download a backup file. Store it safely and import when needed.
+            </div>
+          </div>
+
+          <div>
+            <div style="font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">My library disappeared - what happened?</div>
+            <div style="font-size:0.78rem; color:var(--text-dim); line-height:1.6;">
+              Likely causes: Incognito/Private browsing, cleared browser data, or different browser/device. If you exported your library, click <strong>📚 Library → ⬆ Import Library</strong> to restore. Otherwise, prompts are lost (this is why we recommend regular exports).
+            </div>
+          </div>
+        </div>
+
+        <!-- Best Practices -->
+        <div style="background:var(--surface); border-left:3px solid var(--level2); padding:1rem; margin-bottom:1rem; border-radius:var(--radius);">
+          <div style="font-size:0.85rem; font-weight:600; color:var(--level2); margin-bottom:0.5rem;">Best Practices</div>
+          
+          <div style="margin-bottom:1rem;">
+            <div style="font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">What makes a good Persona?</div>
+            <div style="font-size:0.78rem; color:var(--text-dim); line-height:1.6;">
+              Be specific: "Senior change strategist with 10 years in Fortune 500 transformation" beats "Expert". Include expertise level, perspective, and relevant background.
+            </div>
+          </div>
+
+          <div style="margin-bottom:1rem;">
+            <div style="font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">How specific should my Task be?</div>
+            <div style="font-size:0.78rem; color:var(--text-dim); line-height:1.6;">
+              Very specific! "Write a 250-word email announcing the ERP migration to frontline managers" beats "help me write something about change management". Use action verbs and define the deliverable.
+            </div>
+          </div>
+
+          <div>
+            <div style="font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">What should I put in Context?</div>
+            <div style="font-size:0.78rem; color:var(--text-dim); line-height:1.6;">
+              Answer: Who's the audience? What's happening? What constraints matter? Use the <strong>• Bullets</strong> toggle for clarity. Example: "• Audience: Senior executives • Situation: Q4 planning • Constraint: 2-week timeline"
+            </div>
+          </div>
+        </div>
+
+        <!-- Features -->
+        <div style="background:var(--surface); border-left:3px solid var(--level2); padding:1rem; margin-bottom:1rem; border-radius:var(--radius);">
+          <div style="font-size:0.85rem; font-weight:600; color:var(--level2); margin-bottom:0.5rem;">Features & Tips</div>
+          
+          <div style="margin-bottom:1rem;">
+            <div style="font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">What's the bullet toggle in Context?</div>
+            <div style="font-size:0.78rem; color:var(--text-dim); line-height:1.6;">
+              Click <strong>• Bullets</strong> button to automatically format your context with bullet points. Click again (shows ✓) to remove bullets. Makes context easier to read and scan.
+            </div>
+          </div>
+
+          <div style="margin-bottom:1rem;">
+            <div style="font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">How do I use the Examples tab?</div>
+            <div style="font-size:0.78rem; color:var(--text-dim); line-height:1.6;">
+              The Examples tab shows weak vs. strong prompts with actual AI outputs. See concrete before/after comparisons to understand what makes prompts effective. Great for learning!
+            </div>
+          </div>
+
+          <div>
+            <div style="font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Does this work on mobile?</div>
+            <div style="font-size:0.78rem; color:var(--text-dim); line-height:1.6;">
+              Yes! The app is fully responsive. On mobile, sections stack vertically. Desktop is preferred for intensive work, but mobile works great for quick edits or reviewing saved prompts.
+            </div>
+          </div>
+        </div>
+
+        <!-- Troubleshooting -->
+        <div style="background:var(--surface); border-left:3px solid var(--bad); padding:1rem; margin-bottom:1rem; border-radius:var(--radius);">
+          <div style="font-size:0.85rem; font-weight:600; color:var(--bad); margin-bottom:0.5rem;">Troubleshooting</div>
+          
+          <div style="margin-bottom:1rem;">
+            <div style="font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Quality Signals aren't updating</div>
+            <div style="font-size:0.78rem; color:var(--text-dim); line-height:1.6;">
+              Make sure you're filling fields for the active framework (selected in sidebar). Framework-specific fields only appear when that framework is selected.
+            </div>
+          </div>
+
+          <div style="margin-bottom:1rem;">
+            <div style="font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Fields aren't showing up</div>
+            <div style="font-size:0.78rem; color:var(--text-dim); line-height:1.6;">
+              Each framework shows different fields. For example, "Few-Shot" shows Example Input/Output boxes. "Chain-of-Thought" shows Reasoning Steps. Select the framework you want from the sidebar first.
+            </div>
+          </div>
+
+          <div>
+            <div style="font-size:0.8rem; font-weight:600; margin-bottom:0.25rem;">Browser compatibility issues?</div>
+            <div style="font-size:0.78rem; color:var(--text-dim); line-height:1.6;">
+              ETC works on Chrome 90+, Firefox 88+, Safari 14+. Update your browser if experiencing issues. Incognito/Private mode won't save library data.
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact -->
+        <div style="text-align:center; padding:1rem; background:var(--surface2); border-radius:var(--radius); margin-top:1.5rem;">
+          <div style="font-size:0.8rem; color:var(--text-dim); margin-bottom:0.5rem;">Still need help?</div>
+          <div style="font-size:0.75rem; color:var(--text-muted);">
+            Visit <a href="https://github.com/68Craiger/etc-prompt-builder" target="_blank" style="color:var(--gold);">GitHub</a> for issues and documentation<br>
+            Creator: <a href="https://trevorlangton.com" target="_blank" style="color:var(--gold);">Trevor Langton</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- PREVIEW -->    <!-- PREVIEW -->
 
 
 
@@ -1982,6 +2140,81 @@ function toggleBullets(fieldId) {
   update();
 }
 
+
+// Export library as JSON file
+function exportLibrary() {
+  if (savedPrompts.length === 0) {
+    showToast('Library is empty - nothing to export');
+    return;
+  }
+  
+  const data = {
+    version: '1.0',
+    exportDate: new Date().toISOString(),
+    prompts: savedPrompts
+  };
+  
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `etc-library-backup-${new Date().toISOString().split('T')[0]}.json`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  
+  showToast(`Exported ${savedPrompts.length} prompts`);
+}
+
+// Import library from JSON file
+function importLibrary(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const data = JSON.parse(e.target.result);
+      
+      // Validate format
+      if (!data.prompts || !Array.isArray(data.prompts)) {
+        showToast('Invalid backup file format');
+        return;
+      }
+      
+      // Ask user if they want to merge or replace
+      const merge = confirm(`Import ${data.prompts.length} prompts?\n\nOK = Add to library (merge)\nCancel = Replace library`);
+      
+      if (merge) {
+        // Merge: add imported prompts to existing
+        const newPrompts = data.prompts.filter(p => !savedPrompts.find(s => s.id === p.id));
+        savedPrompts = [...savedPrompts, ...newPrompts];
+        showToast(`Imported ${newPrompts.length} new prompts`);
+      } else {
+        // Replace: overwrite existing
+        savedPrompts = data.prompts;
+        showToast(`Restored ${savedPrompts.length} prompts`);
+      }
+      
+      // Save to localStorage
+      localStorage.setItem('etc_prompts', JSON.stringify(savedPrompts));
+      
+      // Refresh library display
+      openLibrary();
+      
+      // Reset file input
+      event.target.value = '';
+      
+    } catch (error) {
+      showToast('Error reading backup file');
+      console.error('Import error:', error);
+    }
+  };
+  
+  reader.readAsText(file);
+}
+
 </script>
 
 
@@ -1990,6 +2223,15 @@ function toggleBullets(fieldId) {
     <div class="modal-title">
       <button class="modal-close" onclick="closeLibrary()">✕</button>
       Prompt Library
+    </div>
+    <div style="display:flex; gap:8px; margin-bottom:0.75rem;">
+      <button class="btn-ghost" onclick="exportLibrary()" title="Download library as backup file" style="font-size:0.8rem; flex:1;">
+        ⬇ Export Library
+      </button>
+      <button class="btn-ghost" onclick="document.getElementById('import-file').click()" title="Restore library from backup file" style="font-size:0.8rem; flex:1;">
+        ⬆ Import Library
+      </button>
+      <input type="file" id="import-file" accept=".json" onchange="importLibrary(event)" style="display:none;">
     </div>
     <input type="text" id="library-search" placeholder="Search by name or tag..." oninput="filterLibrary()" style="width:100%; margin-bottom:1rem; padding:8px 12px; background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius); color:var(--text); font-size:0.85rem;">
     <div id="modal-library-content"></div>
